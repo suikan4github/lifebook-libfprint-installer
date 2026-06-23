@@ -14,13 +14,17 @@ if [ "$OS" = "ubuntu" ]; then
     echo "Ubuntu detected."
     # Build dependencies.
     sudo apt update
-    sudo apt install build-essential meson \
+    sudo apt install -y build-essential meson \
     ninja-build pkg-config git \
     libglib2.0-dev libgusb-dev libnss3-dev libgudev-1.0-dev \
     libpixman-1-dev libgirepository1.0-dev fprintd \
     cmake libssl-dev systemd-dev git
 elif [ "$OS" = "fedora" ]; then
-    sudo dnf install fprintd libfprint
+    echo "Fedora detected."
+    sudo dnf group install -y "development-tools"
+    sudo dnf install -y meson ninja-build systemd-devel cmake \
+    libgusb-devel cairo-devel gobject-introspection-devel \
+    libgudev-devel
 else
     echo "Unsupported operating system: $OS"
     exit 1
