@@ -28,7 +28,7 @@ fi
 
 # Get the branch.
 git clone -b nb2033-support https://gitlab.freedesktop.org/Kernel-Error/libfprint.git
-cd libfprint
+cd libfprint || exit 1
 
 # Configure the build
 meson setup builddir --prefix=/usr/local -Ddoc=false -Dgtk-examples=false
