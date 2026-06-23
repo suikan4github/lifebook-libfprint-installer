@@ -10,10 +10,10 @@ developpend by Mr. Sebastian van de Meer.
 [This patch has been sent to the frpintd project](https://gitlab.freedesktop.org/libfprint/libfprint/-/merge_requests/574), but this project is releasing update 
 once or twice a year. 
 
-For the people who want to use the finger print on the Fujitsu Lifebook, I have wrote this
+For the people who want to use the finger print on the Fujitsu Lifebook before the official support by fprintd, I have wrote this
 script to build and install a libfprintd with the patch. 
 
-Note that the major part of this script has been published by Mr. Sebastian van de Meer 
+Note that the major part of this script has been written and published by Mr. Sebastian van de Meer 
 on [his blog](https://www.kernel-error.de/2026/03/17/next-biometrics-nb-2033-u-reverse-engineering-fingerabdruckleser-linux/). 
 
 ## Supported OS and hardware
