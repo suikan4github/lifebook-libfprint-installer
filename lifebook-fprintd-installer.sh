@@ -9,6 +9,9 @@ else
     exit 1
 fi
 
+CONTAINER=patch-container
+
+
 # Install fprintd and libfprint
 if [ "$OS" = "ubuntu" ]; then
     echo "Ubuntu detected."
@@ -21,10 +24,13 @@ if [ "$OS" = "ubuntu" ]; then
     cmake libssl-dev systemd-dev git
 elif [ "$OS" = "fedora" ]; then
     echo "Fedora detected."
-    sudo dnf group install -y "development-tools"
-    sudo dnf install -y meson ninja-build systemd-devel cmake \
-    libgusb-devel cairo-devel gobject-introspection-devel \
-    libgudev-devel
+    toolbox create -c ${CONTAINER} -y
+    toolbox run -c ${CONTAINER} -- sudo dnf group install -y "development-tools"
+    toolbox run -c ${CONTAINER} -- sudo dnf install -y \
+        meson ninja-build systemd-devel cmake \
+        libgusb-devel cairo-devel gobject-introspection-devel \
+        libgudev-devel
+    sudo dnf install -y ninja-build meson    
 else
     echo "Unsupported operating system: $OS"
     exit 1
@@ -38,7 +44,12 @@ cd libfprint || exit 1
 meson setup builddir --prefix=/usr/local -Ddoc=false -Dgtk-examples=false
 
 # Build and install
-ninja -C builddir
+if [ "$OS" = "ubuntu" ]; then
+    ninja -C builddir
+elif [ "$OS" = "fedora" ]; then
+    toolbox run -c ${CONTAINER} -- ninja -C builddir 
+fi
+
 sudo ninja -C builddir install
 sudo ldconfig
 
