@@ -52,8 +52,8 @@ To test the enrolling and verification of finger print, run the following codes:
 
 ```sh
 sudo systemctl restart fprintd
-fprintd-enroll      # place the SAME finger about 5 times
-fprintd-verify      # the correct finger should report "verify-match"
+fprintd-enroll
+fprintd-verify
 ```
 
 After invoking command, text message ask you to puth your finger on the reader. 

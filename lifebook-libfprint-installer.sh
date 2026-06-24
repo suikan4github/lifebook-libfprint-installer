@@ -60,7 +60,7 @@ sudo ninja -C builddir install
 # Fedora only. Move the library to the appropriate directory.
 # Where mr574 is id of the merge request. 
 if [ "$OS" = "fedora" ]; then
-    sudo mv /usr/local/lib64/libfprint-2.so.2.0.0 /usr/lib64/libfprint-2.so.2.0.0.mr574
+    sudo mv /usr/local/lib64/libfprint-2.so.2.0.0 /usr/lib64/libfprint-2.so.2.0.0.nb2033u
 fi
 
 # Update the library link
