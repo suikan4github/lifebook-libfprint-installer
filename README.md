@@ -1,5 +1,5 @@
-# lifebook-fprind-installer
-Tentative fprintd installer for Lifebook U9311/U9312
+# lifebook-libfprint-installer
+Tentative libfprint installer for Lifebook U9311/U9312
 
 **C A U T I O N**: The script in this project installs a software which is not officially managed by fprintd project. Run the script at your own risk.
 
