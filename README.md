@@ -61,5 +61,11 @@ Place the specified finger on the reader 5 times.
 
 Then, another test message ask you to place same finger. And they verify. 
 
+## Uninstall
+To uninstall, run the following commands:
+```sh
+./uninstall.sh
+```
+
 ## License
 This project is published under the [MIT LICENSE](LICENSE).
