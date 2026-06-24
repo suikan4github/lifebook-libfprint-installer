@@ -57,12 +57,15 @@ fi
 # Install the build artifact.
 sudo ninja -C builddir install
 
-# Fedora only. Move the library to the appropriate directory.
-# Where mr574 is id of the merge request. 
+# Fedora only. Move the library to the appropriate Fedora directory.
+# Where nb2033u is the name of sensor.
 if [ "$OS" = "fedora" ]; then
-    sudo mv /usr/local/lib64/libfprint-2.so.2.0.0 /usr/lib64/libfprint-2.so.2.0.0.nb2033u
+    sudo cp /usr/local/lib64/libfprint-2.so.2.0.0 /usr/lib64/libfprint-2.so.2.0.0.nb2033u
 fi
 
 # Update the library link
 sudo ldconfig
+
+# Back to the original directory.
+cd - || exit 1
 
