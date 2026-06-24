@@ -9,6 +9,8 @@ else
     exit 1
 fi
 
+CONTAINER=work-container
+
 # Install fprintd and libfprint
 if [ "$OS" = "ubuntu" ]; then
     echo "Ubuntu detected."
@@ -21,24 +23,46 @@ if [ "$OS" = "ubuntu" ]; then
     cmake libssl-dev systemd-dev git
 elif [ "$OS" = "fedora" ]; then
     echo "Fedora detected."
-    sudo dnf group install -y "development-tools"
-    sudo dnf install -y meson ninja-build systemd-devel cmake \
-    libgusb-devel cairo-devel gobject-introspection-devel \
-    libgudev-devel
+    # Build is done inside container.
+    toolbox create -c ${CONTAINER} -y
+    toolbox run -c ${CONTAINER} -- sudo dnf group install -y "development-tools"
+    toolbox run -c ${CONTAINER} -- sudo dnf install -y \
+        meson ninja-build systemd-devel cmake \
+        libgusb-devel cairo-devel gobject-introspection-devel \
+        libgudev-devel gcc-c++
+    # These build tools is neede to install to host.
+    sudo dnf install -y ninja-build meson    
+
 else
     echo "Unsupported operating system: $OS"
     exit 1
 fi
 
-# Get the branch.
+# Obtain the source code of libfprint.so with NB-2033-U patch.
 git clone -b nb2033-support https://gitlab.freedesktop.org/Kernel-Error/libfprint.git
 cd libfprint || exit 1
 
-# Configure the build
+# Configure the build the libfprint.so
 meson setup builddir --prefix=/usr/local -Ddoc=false -Dgtk-examples=false
 
-# Build and install
-ninja -C builddir
+# Build fprintd
+if [ "$OS" = "ubuntu" ]; then
+    ninja -C builddir
+elif [ "$OS" = "fedora" ]; then
+    toolbox run -c ${CONTAINER} -- ninja -C builddir 
+    # We don't need container anymore.
+    toolbox rm -f -c ${CONTAINER}
+fi
+
+# Install the build artifact.
 sudo ninja -C builddir install
+
+# Fedora only. Move the library to the appropriate directory.
+# Where mr574 is id of the merge request. 
+if [ "$OS" = "fedora" ]; then
+    sudo mv /usr/local/lib64/libfprint-2.so.2.0.0 /usr/lib64/libfprint-2.so.2.0.0.mr574
+fi
+
+# Update the library link
 sudo ldconfig
 
