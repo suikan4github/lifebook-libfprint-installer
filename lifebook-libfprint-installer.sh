@@ -9,7 +9,6 @@ else
     exit 1
 fi
 
-CONTAINER=work-container
 
 # Install fprintd and libfprint
 if [ "$OS" = "ubuntu" ]; then
@@ -24,15 +23,11 @@ if [ "$OS" = "ubuntu" ]; then
 elif [ "$OS" = "fedora" ]; then
     echo "Fedora detected."
     # Build is done inside container.
-    toolbox create -c ${CONTAINER} -y
-    toolbox run -c ${CONTAINER} -- sudo dnf group install -y "development-tools"
-    toolbox run -c ${CONTAINER} -- sudo dnf install -y \
+    sudo dnf group install -y "development-tools"
+    sudo dnf install -y \
         meson ninja-build systemd-devel cmake \
         libgusb-devel cairo-devel gobject-introspection-devel \
-        libgudev-devel gcc-c++
-    # These build tools is neede to install to host.
-    sudo dnf install -y ninja-build meson    
-
+        libgudev-devel gcc-c++ openssl-devel
 else
     echo "Unsupported operating system: $OS"
     exit 1
@@ -43,16 +38,10 @@ git clone -b nb2033-support https://gitlab.freedesktop.org/Kernel-Error/libfprin
 cd libfprint || exit 1
 
 # Configure the build the libfprint.so
-meson setup builddir --prefix=/usr/local -Ddoc=false -Dgtk-examples=false
 
 # Build fprintd
-if [ "$OS" = "ubuntu" ]; then
-    ninja -C builddir
-elif [ "$OS" = "fedora" ]; then
-    toolbox run -c ${CONTAINER} -- ninja -C builddir 
-    # We don't need container anymore.
-    toolbox rm -f -c ${CONTAINER}
-fi
+meson setup builddir --prefix=/usr/local -Ddoc=false -Dgtk-examples=false
+ninja -C builddir
 
 # Install the build artifact.
 sudo ninja -C builddir install
