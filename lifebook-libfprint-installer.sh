@@ -22,12 +22,9 @@ if [ "$OS" = "ubuntu" ]; then
     cmake libssl-dev systemd-dev git
 elif [ "$OS" = "fedora" ]; then
     echo "Fedora detected."
-    # Build is done inside container.
-    sudo dnf group install -y "development-tools"
-    sudo dnf install -y \
-        meson ninja-build systemd-devel cmake \
-        libgusb-devel cairo-devel gobject-introspection-devel \
-        libgudev-devel gcc-c++ openssl-devel
+    echo "This script doesn't support Fedora. Please use [nb2033u-libfprint-fedora](https://github.com/suikan4github/nb2033u-libfprint-fedora) project for Fedora."
+    echo "Exiting..."
+    exit 1
 else
     echo "Unsupported operating system: $OS"
     exit 1

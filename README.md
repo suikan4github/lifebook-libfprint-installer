@@ -17,10 +17,11 @@ Note that the major part of this script has been written and published by Mr. Se
 on [his blog](https://www.kernel-error.de/2026/03/17/next-biometrics-nb-2033-u-reverse-engineering-fingerabdruckleser-linux/). 
 
 ## Supported OS and hardware
-Following distributions and their variants are supported. 
+Following distribution and its variants are supported. 
 
 - Ubuntu
-- Fedora Workstation
+
+For Fedora, see [nb2033u-libfprint-fedora](https://github.com/suikan4github/nb2033u-libfprint-fedora) project.
 
 The PC with the NB-2033-U finger print reader is supported(298d:2033). 
 
@@ -33,7 +34,6 @@ lsusb | grep "298d:2033"
 ## Tested environment
 Distributions:
 - Kubuntu 2026.04 LTS
-- Fedora KDE 44
 
 Hardwares:
 - Lifebook U9311
